@@ -127,6 +127,46 @@ int main() {
 }
 ```
 
+## Type checking and conversion
+Helper functions are provided to easily test whether a JSON value is of a specific type. Additionally, comparison and conversion operators are provided to easily check values and convert to another data type:
+
+``` cpp
+int main() {
+  auto json = json::parse(R"({
+      "int": 42,
+      "float": 42.42,
+      "string": "Hello!",
+      "array": [ 1, 2, 3, 4, 5 ],
+      "object": { "key": "value" },
+      "true": true,
+      "false": false,
+      "null": null,
+    })");
+
+  // Checking data types
+  assert(json["int"].is_integer());
+  assert(json["float"].is_float());
+  assert(json["string"].is_string());
+  assert(json["array"].is_array());
+  assert(json["object"].is_object());
+  assert(json["true"].is_bool());
+  assert(json["false"].is_bool());
+  assert(json["null"].is_null());
+
+  // Comparison
+  assert(json["int"] == 42);
+  assert(json["float"] == 42.42);
+  assert(json["string"] == "Hello!");
+  assert((json["array"].size() == 5 && json["array"][0] == 1));
+  assert(json["object"]["key"] == "value");
+  assert(json["true"] == true);
+  assert(json["false"] == false);
+  
+  // Conversion
+  std::string value = (std::string)json["string"];
+}
+```
+
 # References
 * https://ecma-international.org/publications-and-standards/standards/ecma-404/
     - ECMA-404 - The JSON data interchange syntax

@@ -97,11 +97,11 @@ namespace json {
   }
 
   bool value::is_integer() const {
-    return false;
+    return type == json::value_type::integer;
   }
 
   bool value::is_float() const {
-    return true;
+    return type == json::value_type::floating;
   }
 
   bool value::is_null() const {

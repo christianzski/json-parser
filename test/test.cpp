@@ -147,3 +147,34 @@ TEST_CASE("Error handling", "[errors]") {
 	REQUIRE(!json::parse("[1, 2, 3, 4, 5]").error());
 	#endif
 }
+
+TEST_CASE("Checking types", "[types]") {
+	auto json = json::parse(R"({
+      "int": 42,
+      "float": 42.42,
+      "string": "Hello!",
+      "array": [ 1, 2, 3, 4, 5 ],
+      "object": { "key": "value" },
+      "true": true,
+      "false": false,
+      "null": null,
+    })");
+
+	// Checking data types
+	REQUIRE(json["int"].is_integer());
+	REQUIRE(json["float"].is_float());
+	REQUIRE(json["string"].is_string());
+	REQUIRE(json["array"].is_array());
+	REQUIRE(json["object"].is_object());
+	REQUIRE(json["true"].is_bool());
+	REQUIRE(json["false"].is_bool());
+	REQUIRE(json["null"].is_null());
+
+	REQUIRE(json["int"] == 42);
+	REQUIRE(json["float"] == 42.42);
+	REQUIRE(json["string"] == "Hello!");
+	REQUIRE((json["array"].size() == 5 && json["array"][0] == 1));
+	REQUIRE(json["object"]["key"] == "value");
+	REQUIRE(json["true"] == true);
+	REQUIRE(json["false"] == false);
+}
